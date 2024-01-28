@@ -8,7 +8,7 @@ import torch
 if torch.cuda.is_available():
     os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
 else:
-    os.environ['COMMANDLINE_ARGS'] = "" #"--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
     
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
