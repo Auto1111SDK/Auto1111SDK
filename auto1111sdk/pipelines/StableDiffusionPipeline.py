@@ -8,7 +8,7 @@ from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
 if torch.cuda.is_available():
     os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
 else:
-    os.environ['COMMANDLINE_ARGS'] = "" #"--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
 
 # command_line_args = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
