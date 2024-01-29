@@ -57,8 +57,6 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 
 - No support for Stable Diffusion XL checkpoints on GPUs. Will be adding this soon
 
-Currently, we don't have support for Stable Diffusion XL on GPUs. We are looking to add this soon.
-
 ## Contributing
 
 Auto1111 SDK is continuously evolving, and we appreciate community involvement. We welcome all forms of contributions - bug reports, feature requests, and code contributions.
