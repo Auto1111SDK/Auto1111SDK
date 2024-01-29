@@ -55,7 +55,13 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 
 ## Limitations
 
-- No support for Stable Diffusion XL checkpoints on GPUs. Will be adding this soon
+- No support for Stable Diffusion XL checkpoints on GPUs.
+- No support Hires Fix and Refiner parameters for inference.
+- No support for Lora's
+- No support for Face restoration
+- No support for Dreambooth training script.
+
+We will be adding support for these features very soon (in the priority of their order). We also accept any contributions to work on these issues!
 
 ## Contributing
 
