@@ -6,12 +6,12 @@ import torch
 from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
 
 if torch.cuda.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae --no-half --medvram --use-cpu interrogate"
 elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --no-half --use-cpu interrogate"
 else:
     os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
-
+    
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
 os.environ['ERROR_REPORTING'] = "FALSE"
@@ -192,7 +192,7 @@ default_args_img2img_inpainting = {
     'sampler_index': None
 }
 
-class StableDiffusionPipeline:
+class StableDiffusionXLPipeline:
     def __init__(self, model_path, clip_skip = 1):
         self.__aliases = sd_models.list_models(model_path)
         self.weights_file = os.path.basename(model_path)
