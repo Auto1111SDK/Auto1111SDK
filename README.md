@@ -53,6 +53,10 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
 
+## Features
+
+Currently, we don't have support for Stable Diffusion XL. We are looking to add this soon.
+
 ## Contributing
 
 Auto1111 SDK is continuously evolving, and we appreciate community involvement. We welcome all forms of contributions - bug reports, feature requests, and code contributions.
