@@ -55,7 +55,7 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 
 ## Features
 
-Currently, we don't have support for Stable Diffusion XL. We are looking to add this soon.
+Currently, we don't have support for Stable Diffusion XL on GPUs. We are looking to add this soon.
 
 ## Contributing
 
