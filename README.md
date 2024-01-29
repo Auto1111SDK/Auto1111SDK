@@ -2,7 +2,7 @@
 
 Auto 1111 SDK is a light-weight Python library for generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
 
-- Text-to-Image, Image-to-Image, Inpainting, and Outpainting pipelines. Our pipelines support the exact same parameters as the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), so you can easily replicate creations from the Web Ui on the SDK.
+- Text-to-Image, Image-to-Image, Inpainting, and Outpainting pipelines. Our pipelines support the exact same parameters as the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), so you can easily replicate creations from the Web UI on the SDK.
 - Upscaling Pipelines that can run inference for any Esrgan or Real Esrgan upscaler in a few lines of code.
 - An integration with Civit AI to directly download models from the website.
 
@@ -53,7 +53,9 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
 
-## Features
+## Limitations
+
+- No support for Stable Diffusion XL checkpoints on GPUs. Will be adding this soon
 
 Currently, we don't have support for Stable Diffusion XL on GPUs. We are looking to add this soon.
 
