@@ -678,6 +678,7 @@ class ScriptRunner:
     def process(self, p):
         for script in self.alwayson_scripts:
             try:
+                print(script)
                 script_args = p.script_args[script.args_from:script.args_to]
                 script.process(p, *script_args)
             except Exception:
