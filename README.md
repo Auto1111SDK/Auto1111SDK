@@ -1,12 +1,16 @@
-# Auto 1111 SDK/Python Client
+# Auto 1111 SDK: Stable Diffusion Python library 
 
-Auto 1111 SDK is a light-weight Python library for generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
+Auto 1111 SDK is a light-weight Python library for using Stable Diffusion generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
 
 - Text-to-Image, Image-to-Image, Inpainting, and Outpainting pipelines. Our pipelines support the exact same parameters as the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), so you can easily replicate creations from the Web UI on the SDK.
 - Upscaling Pipelines that can run inference for any Esrgan or Real Esrgan upscaler in a few lines of code.
 - An integration with Civit AI to directly download models from the website.
 
 Join our [Discord!!](https://discord.gg/S7wRQqt6QV)
+
+## Demo
+
+We have a colab demo where you can run many of the operations of Auto 1111 SDK. Check it out [here!!](https://colab.research.google.com/drive/1SekiJ-mdB2V8ogWbyRyF_yDnoMuDGWTl?usp=sharing)
 
 ## Installation
 
@@ -53,15 +57,17 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
 
-## Limitations
+## Roadmap
 
-- No support for Stable Diffusion XL checkpoints on GPUs.
-- No support Hires Fix and Refiner parameters for inference.
-- No support for Lora's
-- No support for Face restoration
-- No support for Dreambooth training script.
+- Adding support for Stable Diffusion XL checkpoints on GPUs.
+- Adding support to load in custom VAE's
+- Adding support Hires Fix and Refiner parameters for inference.
+- Adding support for Lora's
+- Adding support for Face restoration
+- Adding support for Dreambooth training script.
+- Adding support for custom extensions like Controlnet.
 
-We will be adding support for these features very soon (in the priority of their order). We also accept any contributions to work on these issues!
+We will be adding support for these features very soon. We also accept any contributions to work on these issues!
 
 ## Contributing
 
