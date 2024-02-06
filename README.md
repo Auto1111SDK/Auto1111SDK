@@ -1,9 +1,6 @@
 # Auto 1111 SDK: Stable Diffusion Python library 
 
 <p>
-    <a href="https://github.com/saketh12/Auto1111SDK/blob/main/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/huggingface/datasets.svg?color=blue">
-    </a>
     <a href="https://pepy.tech/project/auto1111sdk">
         <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk/month">
     </a>
