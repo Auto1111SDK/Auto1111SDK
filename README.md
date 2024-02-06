@@ -1,6 +1,15 @@
 # Auto 1111 SDK: Stable Diffusion Python library 
 
-Auto 1111 SDK is a light-weight Python library for using Stable Diffusion generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
+<p>
+    <a href="https://github.com/saketh12/Auto1111SDK/blob/main/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/huggingface/datasets.svg?color=blue">
+    </a>
+    <a href="https://pepy.tech/project/auto1111sdk">
+        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk/month">
+    </a>
+    
+</p>
+Auto 1111 SDK is a lightweight Python library for using Stable Diffusion generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
 
 - Text-to-Image, Image-to-Image, Inpainting, and Outpainting pipelines. Our pipelines support the exact same parameters as the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), so you can easily replicate creations from the Web UI on the SDK.
 - Upscaling Pipelines that can run inference for any Esrgan or Real Esrgan upscaler in a few lines of code.
@@ -18,6 +27,12 @@ We recommend installing Auto 1111 SDK in a virtual environment from PyPI. Right 
 
 ```bash
 pip3 install auto1111sdk
+```
+
+To install the latest version of Auto 1111 SDK, run:
+
+```bash
+pip3 install git+https://github.com/saketh12/Auto1111SDK.git
 ```
 
 ## Quickstart
