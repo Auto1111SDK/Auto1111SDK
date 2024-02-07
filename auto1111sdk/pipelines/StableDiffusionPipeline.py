@@ -197,6 +197,9 @@ class StableDiffusionPipeline:
         self.weights_file = os.path.basename(model_path)
         self.__model_data = sd_models.SdModelData(self.__aliases)
         self.__pipe = sd_models.load_model(aliases=self.__aliases, model_data=self.__model_data, weights_file=self.weights_file)
+    def set_vae(self, vae_file): 
+        from ..modules import sd_vae
+        sd_vae.load_vae(self.__pipe, vae_file, "")
 
     def __encode_image(self, image):
         buffered = io.BytesIO()
