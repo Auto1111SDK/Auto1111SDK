@@ -68,6 +68,7 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
     - also supports weights for prompts: a cat :1.2 AND a dog AND a penguin :2.2
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
+- Set custom VAE: works for any model including SDXL
 
 ## Roadmap
 
