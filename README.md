@@ -49,7 +49,7 @@ output[0].save("image.png")
 
 ## Running on Windows
 
-Find the instructions [here.]([https://flush-ai.gitbook.io/automatic-1111-sdk/](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md)).
+Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md)
 
 ## Documentation
 
