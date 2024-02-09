@@ -47,6 +47,10 @@ output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, step
 output[0].save("image.png")
 ```
 
+## Running on Windows
+
+Find the instructions [here.]([https://flush-ai.gitbook.io/automatic-1111-sdk/](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md)).
+
 ## Documentation
 
 We have more detailed examples/documentation of how you can use Auto 1111 SDK [here.](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
