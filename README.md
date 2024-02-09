@@ -49,7 +49,7 @@ output[0].save("image.png")
 
 ## Running on Windows
 
-Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md)
+Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md). Contributed by by Marco Guardigli, mgua@tomware.it
 
 ## Documentation
 
