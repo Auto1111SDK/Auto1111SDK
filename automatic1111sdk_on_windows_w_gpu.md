@@ -2,14 +2,25 @@
 _by Marco Guardigli, mgua@tomware.it_
 
 auto1111sdk 0.0.93 requires torch==2.1.0
-a specific python version between 3.8 and <3.11 is required. 
+
+A specific python version between 3.8 and <3.11 is required for torch. 
+
+To enable GPU accelerations, a specific torch compiled with nvidia cuda libraries is required
+
+This document explains how to setup a windows systems and a dedicated python 3.10 environment for auto1111sdk
+
 
 ## python version
-on windows, you can have several python versions, installed from python.org. 
-specific python environments can be created with a specific python version, using py launcher.
+On windows, you can have several python versions, installed from python.org. 
+Local admin rights are not mandatory to perform the installation.
+Specific python environments can be created with a specific python version, using *py* launcher.
 
-install standard python distributions from python.org, and use the launcher "py" to launch a specific version, before creating the environment. Here are two examples:
-	from powershell: 
+We install standard python distributions from python.org, and use the launcher "py" to launch a specific version when creating the environment. 
+
+Here are two examples. Note how the environment creation line uses py to invoke the specific python version.
+
+These commands are to be run from a powershell prompt: 
+
 ```
 	py -3.8 -m venv venv_python38
 	.\venv_python38\Scripts\activate.ps1
@@ -27,33 +38,73 @@ install standard python distributions from python.org, and use the launcher "py"
 ```
 Download and install the latest python 3.10.x from python.org. use py -3.10 to create the environment where auto1111sdk will be run.
 
-the following commands will create a new environment and activate it.
+The following commands will create a new environment for auto1111sdk and activate it.
+
 ```
 py -3.10 -m venv venv_auto1111sdk
+
 .\venv_auto1111sdk\Scripts\activate.ps1
 ```
-from now on, within the environment, python will invoke the python 3.10 interpreter
+Note the prompt change, indicating the new environment is active.
+
+From now on, within the environment, python will invoke the python 3.10 interpreter. 
+All the installations and executions for this project will be performed within this python environment.
+
+The following command updates the pip package manager in the newly created environment.
+
+```
+python -m pip install pip --upgrade
+```
+Now the local pip is upgraded. Always invoke pip with python -m pip to be sure 
+you run the environment specific pip version.
+
 
 ## torch and cuda
 
-Torch is a library from Meta, dedicated to AI. Cuda is a library released by nvidia to allow code to interact with nvidia GPU hardware
+Torch is a library from Meta, dedicated to AI. 
 
-Simple torch does not use cuda. A binary torch compiled with cuda libraries is needed. Similarly torchvision benefits from cuda, via a dedicated cuda enabled torchvision package
+Cuda is a library released by nvidia to allow code to interact with nvidia GPU hardware.
 
-nvidia gpus allow drivers to be updated at the system level. nvidia runtime is including updated cuda libraries from nvidia. the windows executable nvidia-smi.exe shows system level drivers version and system level cuda version.
+Simple torch does not use cuda. A binary torch compiled with **specific cuda libraries** is needed. 
+Similarly to torch, torchvision benefits from cuda, via a dedicated cuda enabled torchvision package.
 
-current (feb 2024) cuda as reported by my nvidia-smi is 12.2, and this is the system level cuda runtime. You can install a specific level of cuda runtime inside your specific python environment. this runtime is installed from standard repos (no need to go to nvidia repos).
-The python specific cuda runtime has to be <= the system level cuda runtime.
+nvidia gpus allow drivers to be updated at the system level. These are updated when needed.
+nvidia runtime is including with updated cuda libraries from nvidia. 
 
-python specific cuda runtime 11 install ( https://pypi.org/project/nvidia-cuda-runtime-cu11/ )
+The windows executable nvidia-smi.exe shows system level drivers version and system level cuda version.
+
+We do not want that system level cuda libraries, when updated, break our python setup, 
+which requires very specific cuda libraries version.
+
+Current (feb 2024) cuda as reported by my nvidia-smi is 12.2, and this is the system level cuda runtime on my machine. 
+
+A python dedicated specific level of cuda runtime can be installed within a specific python environment. 
+This runtime is installed from standard pip repositories (no need to go to nvidia repos).
+
+The python specific cuda runtime has to be <= the system level cuda runtime. 
+This means tha nvidia-smi tool show the maximum cuda version level that can be supported 
+via the system level components, and not the only available version.
+
+I found that a suitable version of cuda for our torch 2.0.1 is 11.8. the corresponding 
+components for python are available to pip via standard repositories
+(check https://pypi.org/project/nvidia-cuda-runtime-cu11/ ).
+
+Here we install python nvidia cuda v11 components:
 ```
 python -m pip install --verbose nvidia-cuda-runtime-cu11
 ```
-cuda-enabled torch 2.1.0+cu118 and related torchvision
+then cuda-enabled torch 2.1.0+cu118 and related torchvision.
+
+It is important to install torch and torchvision from the same pip line, otherwise dependencies could break.
+
+Note how we install torch from the specific location (index) dedicated to cuda v11.
+(check pytorch.org for details). As you can see, Torch is quite picky about environment releases and dependencies.
+
 ```
 python -m pip install --verbose torch==2.1.0 torchvision --index-url https://download.pytorch.org/whl/cu118
 ```
-after this:
+
+After this we can validate torch and cuda availability from our python environment:
 
 ```
 python
@@ -66,11 +117,11 @@ Torch version: 2.1.0+cu118
 Is CUDA enabled? True
 ```
 
-and 
+and the following command:
 ```
 python - m pip list | grep torch 
 ```
-can be used to see which cuda levels torch is compiled for
+can be used to see which cuda levels torch is compiled for. (you need to have grep tool available)
 
 ```
 python -m pip list | grep torch
@@ -85,14 +136,17 @@ torchvision           	0.16.0+cu118
 
 ## automatic1111sdk
 
-now we can install automatic1111sdk in our environment with
+Now we are ready to install auto1111sdk in our environment with:
 ```
-python -m pip install --verbose automatic1111sdk
+python -m pip install --verbose auto1111sdk
 ```
-and save the package version list in the classical requirements.txt file
+and we can save the package version list in the classical requirements.txt file
 ```
 python -m pip freeze >requirements.txt
 ```
+to preserve all the dependency choices performed by pip.
+
+
 ## putting it all together
 
 Now we can test and run some code: save the following in auto1111sdk_test.py and run it with
@@ -178,3 +232,5 @@ del pipe
 
 ```
  
+Enjoy!
+
