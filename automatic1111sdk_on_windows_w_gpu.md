@@ -2,6 +2,7 @@
 _by Marco Guardigli, mgua@tomware.it_
 
 auto1111sdk 0.0.93 requires torch==2.1.0
+
 a specific python version between 3.8 and <3.11 is required. 
 
 ## python version
