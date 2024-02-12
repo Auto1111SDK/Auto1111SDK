@@ -53,8 +53,8 @@ Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/
 
 ## Documentation
 
-We have more detailed examples/documentation of how you can use Auto 1111 SDK [here.](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
-For a detailed comparison between us and Huggingface diffusers, you can read [this.](https://flush-ai.gitbook.io/automatic-1111-sdk/auto-1111-sdk-vs-huggingface-diffusers).
+We have more detailed examples/documentation of how you can use Auto 1111 SDK [here](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
+For a detailed comparison between us and Huggingface diffusers, you can read [this](https://flush-ai.gitbook.io/automatic-1111-sdk/auto-1111-sdk-vs-huggingface-diffusers).
 
 
 ## Features
