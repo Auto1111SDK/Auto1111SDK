@@ -230,7 +230,6 @@ class StableDiffusionPipeline:
         return final_args
 
     def generate_txt2img(self, prompt: str, negative_prompt: str = "", seed: int = -1, steps: int = 20, cfg_scale: float = 7.0, width: int = 512, height: int = 512, num_images: int = 1, sampler_name: str = 'Euler'):
-        os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --use-cpu interrogate"
         from ..modules.processing import StableDiffusionProcessingTxt2Img, process_images
         
         input_params = {

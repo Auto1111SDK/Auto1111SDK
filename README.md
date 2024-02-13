@@ -56,6 +56,8 @@ Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/
 We have more detailed examples/documentation of how you can use Auto 1111 SDK [here](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
 For a detailed comparison between us and Huggingface diffusers, you can read [this](https://flush-ai.gitbook.io/automatic-1111-sdk/auto-1111-sdk-vs-huggingface-diffusers).
 
+For a detailed guide on how to use SDXL, we recommend reading [this](https://flush-ai.gitbook.io/automatic-1111-sdk/pipelines/stable-diffusion-xl)
+
 
 ## Features
 - Original txt2img and img2img modes
@@ -73,11 +75,12 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
 - Set custom VAE: works for any model including SDXL
+- Support for SDXL with Stable Diffusion XL Pipelines
+- Pass in custom arguments to the models
+- No 77 prompt token limit (unlike Huggingface Diffusers, which has this limit)
 
 ## Roadmap
 
-- Adding support for Stable Diffusion XL checkpoints on GPUs.
-- Adding support to load in custom VAE's
 - Adding support Hires Fix and Refiner parameters for inference.
 - Adding support for Lora's
 - Adding support for Face restoration
