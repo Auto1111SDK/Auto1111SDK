@@ -167,11 +167,12 @@ default_args_img2img_inpainting = {
     'sampler_index': None
 }
 
-class StableDiffusionPipeline:
+class StableDiffusionXLPipeline:
     def __init__(self, model_path, default_command_args = None, clip_skip = 1):
         if default_command_args is None:
             if torch.cuda.is_available():
-                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+                os.environ['COMMANDLINE_ARGS'] = "--no-half-vae --no-half --medvram"
+#                 os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --medvram" # makes it faster with fp16 vae
             elif torch.backends.mps.is_available():
                 os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
             else:
@@ -196,7 +197,6 @@ class StableDiffusionPipeline:
     def set_vae(self, vae_file): 
         from ..modules import sd_vae
         sd_vae.load_vae(self.__pipe, vae_file, "")
-        
     def __encode_image(self, image):
         buffered = io.BytesIO()
         image.save(buffered, format="PNG")
@@ -533,54 +533,3 @@ class StableDiffusionPipeline:
 
         combined_image = images.combine_grid(grid)
         return [combined_image]
-
-def civit_download(url: str, file_save: str):
-    civit_model_api = "https://civitai.com/api/v1/models/"
-    import requests
-    import re
-
-    # Check if the URL format is correct
-    model_id_match = re.search(r'models/(\d+)', url)
-    if not model_id_match:
-        raise ValueError("Invalid URL format for model ID")
-
-    endpoint = civit_model_api + model_id_match.group(1)
-
-    try:
-        response = requests.get(endpoint)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        raise ConnectionError(f"Error in HTTP request: {e}")
-
-    model_version_id_match = re.search(r'modelVersionId=(\d+)', url)
-    try:
-        data = response.json()
-    except ValueError:
-        raise ValueError("Response content is not valid JSON")
-
-    if model_version_id_match:
-        model_version_id = int(model_version_id_match.group(1))
-        download_url = None
-        for model_version in data.get('modelVersions', []):
-            if model_version['id'] == model_version_id:
-                download_url = model_version.get('downloadUrl')
-                break
-        if not download_url:
-            raise ValueError("Model version ID not found in the data")
-    else:
-        download_url = data.get('modelVersions', [{}])[0].get('downloadUrl')
-
-    if not download_url:
-        raise ValueError("Download URL not found")
-
-    try:
-        response = requests.get(download_url)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        raise ConnectionError(f"Error downloading the file: {e}")
-
-    try:
-        with open(file_save, 'wb') as f:
-            f.write(response.content)
-    except IOError as e:
-        raise IOError(f"Error writing file: {e}")
