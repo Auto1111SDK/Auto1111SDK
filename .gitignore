@@ -3,3 +3,4 @@ auto1111sdk.egg-info
 build
 dist
 setup.py
+model.safetensors
