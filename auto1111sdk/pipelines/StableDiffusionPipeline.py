@@ -533,7 +533,7 @@ class StableDiffusionPipeline:
         combined_image = images.combine_grid(grid)
         return [combined_image]
 
-def civit_download(url: str, file_save: str):
+def civit_download(url: str, file_save: str, api_key: str = ""):
     civit_model_api = "https://civitai.com/api/v1/models/"
     import requests
     import re
@@ -544,6 +544,9 @@ def civit_download(url: str, file_save: str):
         raise ValueError("Invalid URL format for model ID")
 
     endpoint = civit_model_api + model_id_match.group(1)
+
+    if api_key != "":
+        endpoint = endpoint + "?token=" + api_key
 
     try:
         response = requests.get(endpoint)
@@ -572,6 +575,9 @@ def civit_download(url: str, file_save: str):
     if not download_url:
         raise ValueError("Download URL not found")
 
+    if api_key != "":
+        download_url = download_url + "?token=" + api_key
+    
     try:
         response = requests.get(download_url)
         response.raise_for_status()
