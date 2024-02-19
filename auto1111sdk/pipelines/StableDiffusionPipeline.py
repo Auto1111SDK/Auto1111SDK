@@ -192,11 +192,12 @@ default_args_img2img_inpainting = {
 }
 
 class StableDiffusionPipeline:
-    def __init__(self, model_path, clip_skip = 1):
+    def __init__(self, model_path, clip_skip = 1, controlnet = None):
         self.__aliases = sd_models.list_models(model_path)
         self.weights_file = os.path.basename(model_path)
         self.__model_data = sd_models.SdModelData(self.__aliases)
         self.__pipe = sd_models.load_model(aliases=self.__aliases, model_data=self.__model_data, weights_file=self.weights_file)
+        self.controlnet = controlnet
 
     def __encode_image(self, image):
         buffered = io.BytesIO()
@@ -246,6 +247,11 @@ class StableDiffusionPipeline:
         input_params = self.__process_args_txt2img(**input_params)
         p = StableDiffusionProcessingTxt2Img(sd_model=self.__pipe, **input_params)
         p.is_api = True
+
+        if self.controlnet:
+            p.scripts = self.controlnet.script_runner
+            p.script_args = self.controlnet.script_args
+
         processed = process_images(p, self.__aliases, self.__model_data, self.__pipe, self.weights_file)
         if hasattr(p, 'close'):
             p.close()

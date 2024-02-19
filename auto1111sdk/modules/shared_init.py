@@ -17,7 +17,7 @@ def initialize():
     shared.opts = options.Options(shared_options.options_templates, shared_options.restricted_opts)
     shared.restricted_opts = shared_options.restricted_opts
     if os.path.exists(shared.config_filename):
-        shared.opts.load(shared.config_filename)
+        print(shared.opts.load(shared.config_filename))
 
     from . import devices
     devices.device, devices.device_interrogate, devices.device_gfpgan, devices.device_esrgan, devices.device_codeformer = \
