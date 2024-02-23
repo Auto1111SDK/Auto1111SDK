@@ -3,6 +3,10 @@
         "checkpoint/model.safetensors": {
             "mtime": 1706923544.9961846,
             "value": {}
+        },
+        "checkpoint/dreamshaper.safetensors": {
+            "mtime": 1708476576.1344988,
+            "value": {}
         }
     }
 }

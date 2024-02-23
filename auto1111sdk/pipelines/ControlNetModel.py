@@ -8,7 +8,7 @@ from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
 if torch.cuda.is_available():
     os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
 elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate" #"--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
 else:
     os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
@@ -99,15 +99,15 @@ UiControlNetUnit_false = {
     'enabled': False,
     'module': 'none',
     'model': 'None',
-    'weight': 1,
+    'weight': 1.0,
     'image': None,
     'resize_mode': 'Crop and Resize',
     'low_vram': False,
     'processor_res': -1,
     'threshold_a': -1,
     'threshold_b': -1,
-    'guidance_start': 0,
-    'guidance_end': 1,
+    'guidance_start': 0.0,
+    'guidance_end': 1.0,
     'pixel_perfect': False,
     'control_mode': 'Balanced',
     'inpaint_crop_input_image': False,
@@ -116,18 +116,31 @@ UiControlNetUnit_false = {
     'advanced_weighting': None
 }
 
+
+def read_image(img_path):
+    import cv2
+
+    img = cv2.imread(img_path)
+
+    if img is None:
+        raise FileNotFoundError(f"Could not load image from path: {img_path}")
+    
+    retval, bytes = cv2.imencode('.png', img)
+    encoded_image = base64.b64encode(bytes).decode('utf-8')
+    return encoded_image
+
 UiControlNetUnit_true = {
     "enabled": True,
-    "module": "depth_leres",
-    "model": "control_v11p_sd15_normalbae",
+    "module": None,
+    "model": "control_v11p_sd15_lineart",
     "weight": 1,
     "image": {
-        "image": "Placeholder for image array data",
-        "mask": "Placeholder for mask array data"
+        "image": read_image('/Users/adityachebrolu/Documents/warpfusion/stock_mountain.png'),
+        # "mask": "Placeholder for mask array data"
     },
     "resize_mode": "Crop and Resize",
     "low_vram": False,
-    "processor_res": 512,
+    "processor_res": 64,
     "threshold_a": 0,
     "threshold_b": 0,
     "guidance_start": 0,
@@ -140,6 +153,22 @@ UiControlNetUnit_true = {
     "advanced_weighting": None
 }
 
+config = {
+    'enabled': True,
+    'module': 'none',
+    'model': 'control_v11p_sd15_openpose',
+    'weight': 1.0,
+    'image': read_image('/Users/adityachebrolu/Documents/warpfusion/stock_mountain.png'),
+    'resize_mode': 1,
+    'lowvram': False,
+    'processor_res': 64,
+    'threshold_a': 64,
+    'threshold_b': 64,
+    'guidance_start': 0.0,
+    'guidance_end': 1.0,
+    'control_mode': 0,
+    'pixel_perfect': False
+}
 
 class ControlNetModel:
     def __init__(self):
@@ -153,16 +182,12 @@ class ControlNetModel:
         unit_1 = UiControlNetUnit(**UiControlNetUnit_true)
         unit_2 = UiControlNetUnit(**UiControlNetUnit_false)
         unit_3 = UiControlNetUnit(**UiControlNetUnit_false)
-        controlnet_script_tuple = (unit_1, unit_2, unit_3)
+        controlnet_script_tuple = (config, unit_2, unit_3)
 
         args_list = [controlnet_script_tuple]
         
         current_index = 0
         for script, arguments in zip(script_runner.alwayson_scripts, args_list):
-            # print(script)
-            # print("HI")
-            # print(current_index)
-            # print(current_index + len(arguments))
             script.args_from = current_index
             script.args_to = current_index + len(arguments)
             current_index = current_index + len(arguments)

@@ -1,6 +1,6 @@
 import os
 
-os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+# os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --no-half --use-cpu interrogate"
 
 from auto1111sdk import civit_download, download_realesrgan, RealEsrganPipeline, StableDiffusionPipeline, EsrganPipeline, ControlNetModel
 from PIL import Image
@@ -15,9 +15,11 @@ from PIL import Image
 
 model = ControlNetModel()
 
-pipe = StableDiffusionPipeline("model.safetensors", controlnet=model)
-prompt = "closeup portrait photo of beautiful muslim woman, 8k uhd, high quality, cinematic"
+pipe = StableDiffusionPipeline("dreamshaper.safetensors", controlnet=model)
+print(os.environ['COMMANDLINE_ARGS'])
+prompt = "closeup portrait photo of black dog, 8k uhd, high quality, cinematic"
 negative_prompt = "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck"
 output = pipe.generate_txt2img(num_images = 1, prompt = prompt, height = 512, width = 512, negative_prompt = negative_prompt, steps = 10)
+
 output[0].save("huh.png")
 
