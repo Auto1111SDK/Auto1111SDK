@@ -1,5 +1,7 @@
 # How to run automatic1111sdk on windows, using an nvidia gpu
-_by Marco Guardigli, mgua@tomware.it_
+_by Marco Guardigli, mgua@tomware.it_ 
+
+(updated on feb 23 2024)
 
 auto1111sdk 0.0.93 requires torch==2.1.0
 
@@ -63,39 +65,37 @@ you run the environment specific pip version.
 
 Torch is a library from Meta, dedicated to AI. 
 
-Cuda is a library released by nvidia to allow code to interact with nvidia GPU hardware.
+Cuda is a library released by Nvidia to allow code to interact with nvidia GPU hardware.
 
 Simple torch does not use cuda. A binary torch compiled with **specific cuda libraries** is needed. 
-Similarly to torch, torchvision benefits from cuda, via a dedicated cuda enabled torchvision package.
+Similarly to torch, also the torchvision library benefits from cuda, via a dedicated cuda enabled torchvision package.
 
-nvidia gpus allow drivers to be updated at the system level. These are updated when needed.
-nvidia runtime is including with updated cuda libraries from nvidia. 
+Nvidia gpus allow drivers to be updated at the system level. These are updated when needed.
+Nvidia runtime comes from Nvidia too, with updated cuda libraries. 
 
-The windows executable nvidia-smi.exe shows system level drivers version and system level cuda version.
+The windows executable **nvidia-smi.exe** shows system level drivers version and system level cuda version.
 
 We do not want that system level cuda libraries, when updated, break our python setup, 
 which requires very specific cuda libraries version.
 
-Current (feb 2024) cuda as reported by my nvidia-smi is 12.2, and this is the system level cuda runtime on my machine. 
+Current (feb 2024) on my machine the cuda version, as reported by nvidia-smi is 12.2, and this is the system level cuda runtime. 
 
 A python dedicated specific level of cuda runtime can be installed within a specific python environment. 
-This runtime is installed from standard pip repositories (no need to go to nvidia repos).
+This runtime is installed from standard pip repositories (no need to go to Nvidia repos).
 
 The python specific cuda runtime has to be <= the system level cuda runtime. 
-This means tha nvidia-smi tool show the maximum cuda version level that can be supported 
-via the system level components, and not the only available version.
+Actually the nvidia-smi tool shows _the highest_ cuda version level that can be supported in current setup 
+via the system level components. This is not to be intendend as the only available version.
 
-I found that a suitable version of cuda for our torch 2.0.1 is 11.8. the corresponding 
-components for python are available to pip via standard repositories
-(check https://pypi.org/project/nvidia-cuda-runtime-cu11/ ).
+A suitable cuda version for torch 2.0.1 is 11.8. The corresponding components for python are available to pip via standard repositories. (check https://pypi.org/project/nvidia-cuda-runtime-cu11/ ).
 
 Here we install python nvidia cuda v11 components:
 ```
 python -m pip install --verbose nvidia-cuda-runtime-cu11
 ```
-then cuda-enabled torch 2.1.0+cu118 and related torchvision.
+and then  cuda-enabled torch 2.1.0+cu118 and related torchvision.
 
-It is important to install torch and torchvision from the same pip line, otherwise dependencies could break.
+It is **important** to install torch and torchvision from the same pip line, otherwise dependencies could break.
 
 Note how we install torch from the specific location (index) dedicated to cuda v11.
 (check pytorch.org for details). As you can see, Torch is quite picky about environment releases and dependencies.
