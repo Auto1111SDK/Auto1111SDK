@@ -194,6 +194,7 @@ class StableDiffusionXLPipeline:
         self.weights_file = os.path.basename(model_path)
         self.__model_data = sd_models.SdModelData(self.__aliases)
         self.__pipe = sd_models.load_model(aliases=self.__aliases, model_data=self.__model_data, weights_file=self.weights_file)
+        self.pipeline_data = None
     def set_vae(self, vae_file): 
         from ..modules import sd_vae
         sd_vae.load_vae(self.__pipe, vae_file, "")
@@ -252,6 +253,7 @@ class StableDiffusionXLPipeline:
             p.close()
 
         output_images = list(processed.images)
+        self.pipeline_data = p
         return output_images
     
     def __process_args_img2img(self, **kwargs):
@@ -295,6 +297,7 @@ class StableDiffusionXLPipeline:
         if hasattr(p, 'close'):
             p.close()
         output_images = list(processed.images)
+        self.pipeline_data = p
         return output_images
     
     def inpainting_img2img(self, mask: Image, init_image: Image, prompt: str, negative_prompt: str = "", seed: int = -1, steps: int = 20, cfg_scale: float = 7.0, num_images: int = 1, sampler_name: str = 'Euler', denoising_strength: float = 0.75, mask_blur: int = 4, inpaint_full_res_padding: int =32):
@@ -322,6 +325,7 @@ class StableDiffusionXLPipeline:
         if hasattr(p, 'close'):
             p.close()
         output_images = list(processed.images)
+        self.pipeline_data = p
         return output_images
     
     def sd_upscale_img2img(self, prompt: str, init_image: Image, upscaler = None, overlap: int = 64, scale_factor: int = 2, negative_prompt: str = "", seed: int = -1, steps: int = 20, cfg_scale: float = 7.0, num_images: int = 1, sampler_name: str = 'Euler', denoising_strength: float = 0.75):
@@ -405,6 +409,7 @@ class StableDiffusionXLPipeline:
 
             combined_image = images.combine_grid(grid)
             result_images.append(combined_image)
+        self.pipeline_data = p
         return result_images
 
     def poor_mans_outpainting_img2img(self, prompt: str, init_image: Image, pixels: int =128, mask_blur: int =4, inpainting_fill: str ="fill", direction: list = ["left"], negative_prompt: str = "", seed: int = -1, steps: int = 20, cfg_scale: float = 7.0, sampler_name: str = 'Euler', denoising_strength: float = 0.75):
@@ -531,4 +536,5 @@ class StableDiffusionXLPipeline:
                 image_index += 1
 
         combined_image = images.combine_grid(grid)
+        self.pipeline_data = p
         return [combined_image]

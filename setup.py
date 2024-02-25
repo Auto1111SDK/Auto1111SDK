@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '0.0.94'
+VERSION = '0.0.95'
 DESCRIPTION = 'SDK for Automatic 1111.'
 LONG_DESCRIPTION = 'A package that allows you to easily generate images and run diffusion models the same way as Automatic 1111.'
 
