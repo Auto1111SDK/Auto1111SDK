@@ -134,5 +134,3 @@ class ControlNetModel:
 
         self.script_runner = script_runner
         self.script_args = controlnet_script_tuple
-
-            
