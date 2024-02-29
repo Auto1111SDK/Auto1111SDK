@@ -3,3 +3,5 @@ auto1111sdk.egg-info
 build
 dist
 setup.py
+dreamshaper.safetensors
+control_v11p_sd15_openpose.pth

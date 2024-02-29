@@ -13,7 +13,16 @@ from PIL import Image
 # output = pipe.generate_txt2img(num_images = 2, prompt = prompt, height = 1024, width = 1024, negative_prompt = negative_prompt, steps = 10)
 # output[0].save("huh.png")
 
-model = ControlNetModel()
+def read_image(img_path):
+    import cv2
+    import base64
+
+    img = cv2.imread(img_path)
+    retval, bytes = cv2.imencode('.png', img)
+    encoded_image = base64.b64encode(bytes).decode('utf-8')
+    return encoded_image
+
+model = ControlNetModel(model="control_v11p_sd15_openpose", image=read_image(img_path="stock_mountain.png"))
 
 pipe = StableDiffusionPipeline("dreamshaper.safetensors", controlnet=model)
 print(os.environ['COMMANDLINE_ARGS'])

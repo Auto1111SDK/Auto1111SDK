@@ -3,14 +3,15 @@ import sys
 import os
 import warnings
 import torch
-from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
+# from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
 
 if torch.cuda.is_available():
     os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
 elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] =  "--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --no-half-controlnet --use-cpu interrogate" #"--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+    os.environ['COMMANDLINE_ARGS'] =  "--no-half --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
 else:
     os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
 os.environ['ERROR_REPORTING'] = "FALSE"
@@ -251,9 +252,6 @@ class StableDiffusionPipeline:
         if self.controlnet:
             p.scripts = self.controlnet.script_runner
             p.script_args = self.controlnet.script_args
-
-        for key, value in os.environ.items():
-            print(f"{key}: {value}")
 
         processed = process_images(p, self.__aliases, self.__model_data, self.__pipe, self.weights_file)
         if hasattr(p, 'close'):
