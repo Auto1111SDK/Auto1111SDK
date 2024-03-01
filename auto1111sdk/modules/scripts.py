@@ -702,6 +702,8 @@ class ScriptRunner:
 
     def before_process(self, p):
         for script in self.alwayson_scripts:
+            print(script)
+            print(p.script_args[script.args_from:script.args_to])
             try:
                 script_args = p.script_args[script.args_from:script.args_to]
                 script.before_process(p, *script_args)
@@ -710,6 +712,8 @@ class ScriptRunner:
 
     def process(self, p):
         for script in self.alwayson_scripts:
+            print(script)
+            print(p.script_args[script.args_from:script.args_to])
             try:
                 script_args = p.script_args[script.args_from:script.args_to]
                 script.process(p, *script_args)

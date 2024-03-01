@@ -8,7 +8,7 @@ import torch
 if torch.cuda.is_available():
     os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
 elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate" #"--no-half --api --skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+    os.environ['COMMANDLINE_ARGS'] = "--no-half --skip-torch-cuda-test --upcast-sampling --no-half-vae interrogate"
     # os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
 else:
     os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
@@ -90,15 +90,19 @@ UiControlNetUnit_false = {
 }
 
 class ControlNetModel:
-    def __init__(self, model, image, weight=1.0, resize_mode=1, lowvram=False, processor_res=64, threshold_a=64, threshold_b=64, guidance_start=0.0, guidance_end=1.0, control_mode=0, pixel_perfect=False):
+    def __init__(self, model: str, image: str, module: str = 'none', weight: float = 1.0, 
+                 resize_mode: int = 1, lowvram: bool = False, processor_res: int = 512, 
+                 threshold_a: int = 1, threshold_b: int = 1, guidance_start: float = 0.0, 
+                 guidance_end: float = 1.0, control_mode: int = 0, pixel_perfect: bool = False):
+
         if not model:
             raise ValueError("Parameter 'model' is required and cannot be None or empty.")
         if not image:
             raise ValueError("Parameter 'image' is required and cannot be None or empty.")
         
         self.config = {
-            'enabled': True,  # Assuming this remains constant as it's not a parameter
-            'module': 'none',  # Assuming this remains constant as well
+            'enabled': True, 
+            'module': module,  # Assuming this remains constant as well
             'model': model,
             'weight': weight,
             'image': image,

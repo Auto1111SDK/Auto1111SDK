@@ -22,13 +22,13 @@ def read_image(img_path):
     encoded_image = base64.b64encode(bytes).decode('utf-8')
     return encoded_image
 
-model = ControlNetModel(model="control_v11p_sd15_openpose", image=read_image(img_path="stock_mountain.png"))
+model = ControlNetModel(model="control_v11p_sd15_openpose", module="openpose_full", image=read_image(img_path="controlNet_demo_image.jpg"))
 
-pipe = StableDiffusionPipeline("dreamshaper.safetensors", controlnet=model)
+pipe = StableDiffusionPipeline("v1-5-pruned-emaonly.ckpt", controlnet=model)
 print(os.environ['COMMANDLINE_ARGS'])
-prompt = "closeup portrait photo of black dog, 8k uhd, high quality, cinematic"
-negative_prompt = "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck"
-output = pipe.generate_txt2img(num_images = 1, prompt = prompt, height = 512, width = 512, negative_prompt = negative_prompt, steps = 10)
+prompt = "full-body, a young female, highlights in hair, dancing outside a restaurant, brown eyes, wearing jeans"
+negative_prompt = "disfigured, ugly, bad, immature"
+output = pipe.generate_txt2img(num_images = 1, prompt = prompt, height = 776, width = 512, negative_prompt = negative_prompt, steps = 25)
 
 output[0].save("huh.png")
 
