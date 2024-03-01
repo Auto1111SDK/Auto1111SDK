@@ -4,12 +4,6 @@ import os
 import warnings
 import torch
 
-if torch.cuda.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
-elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--no-half --skip-torch-cuda-test --upcast-sampling --no-half-vae interrogate"
-else:
-    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
 os.environ['ERROR_REPORTING'] = "FALSE"
@@ -21,32 +15,20 @@ warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvisi
 
 warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision.transforms.functional_tensor")
 
-from ..modules import sd_samplers
-sd_samplers.set_samplers()
-from ..modules import shared_init
-shared_init.initialize()
-
-from ..modules import sd_models
-sd_models.setup_model()
-
-from ..modules import devices
-devices.first_time_calculation()
-
-from  ..modules import shared as shared
-warnings.filterwarnings("default" if shared.opts.show_warnings else "ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
 
 
 import io
 from PIL import Image, PngImagePlugin
 import base64
 import piexif
-from ..modules import processing, images, devices
+# from ..modules import processing, images, devices
 import math
 
 from realesrgan import RealESRGANer
 from basicsr.archs.rrdbnet_arch import RRDBNet
 from realesrgan.archs.srvgg_arch import SRVGGNetCompact
-from ..modules.shared import cmd_opts
+# from ..modules.shared import cmd_opts
 
 
 real_esrgan_info = {
@@ -94,11 +76,33 @@ def download_realesrgan(model_id, weight_paths):
         f.write(response.content)
 
 class RealEsrganPipeline:
-    def __init__(self, model_id, model_path=None):
+    def __init__(self, model_id, model_path=None, default_command_args = None):
         self.model_weights = model_path
         model_dict = real_esrgan_info[model_id]
         self.scale = model_dict['scale']
-        # if model_path is None:
+
+        if default_command_args is None:
+            if torch.cuda.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+            elif torch.backends.mps.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+            else:
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+        else:
+            os.environ['COMMANDLINE_ARGS'] = default_command_args
+
+        from ..modules import sd_samplers
+        sd_samplers.set_samplers()
+        from ..modules import shared_init
+        shared_init.initialize()
+        from ..modules import sd_models
+        sd_models.setup_model()
+        from ..modules import script_callbacks, sd_hijack_optimizations, sd_hijack
+        script_callbacks.on_list_optimizers(sd_hijack_optimizations.list_optimizers)
+        sd_hijack.list_optimizers()
+
+        from ..modules.shared import cmd_opts
+        from ..modules import shared
 
         self.__upsampler = RealESRGANer(
             scale=model_dict['scale'], 
@@ -139,20 +143,31 @@ import numpy as np
 import torch
 from PIL import Image
 
-from ..modules import esrgan_model_arch as arch
-from ..modules import images, devices
+# from ..modules import images, devices
 from tqdm import tqdm
 
 LANCZOS = (Image.Resampling.LANCZOS if hasattr(Image, 'Resampling') else Image.LANCZOS)
 NEAREST = (Image.Resampling.NEAREST if hasattr(Image, 'Resampling') else Image.NEAREST)
 
 class EsrganPipeline:
-    def __init__(self, model_path):
+    def __init__(self, model_path, default_command_args = None):
+        if default_command_args is None:
+            if torch.cuda.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+            elif torch.backends.mps.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+            else:
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+        else:
+            os.environ['COMMANDLINE_ARGS'] = default_command_args
+        from ..modules import images, devices
         self.model_weights = model_path
         self.__model = self.__load_model(self.model_weights)
         self.__model = self.__model.to(devices.device_esrgan)
 
     def __load_model(self, path: str):
+        from ..modules import esrgan_model_arch as arch
+        from ..modules import devices
         filename = path
 
         state_dict = torch.load(filename, map_location='cpu' if devices.device_esrgan.type == 'mps' else None)
@@ -205,6 +220,7 @@ class EsrganPipeline:
         return img
     
 def _upscale_without_tiling(model, img):
+    from ..modules import images, devices
     img = np.array(img)
     img = img[:, :, ::-1]
     img = np.ascontiguousarray(np.transpose(img, (2, 0, 1))) / 255
@@ -219,6 +235,8 @@ def _upscale_without_tiling(model, img):
     return Image.fromarray(output, 'RGB')
 
 def _esrgan_upscale(model, img):
+    from ..modules import shared
+    from ..modules import images
     if shared.opts.ESRGAN_tile == 0:
         return _upscale_without_tiling(model, img)
 

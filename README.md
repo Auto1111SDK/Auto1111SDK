@@ -1,6 +1,12 @@
-# Auto 1111 SDK/Python Client
+# Auto 1111 SDK: Stable Diffusion Python library 
 
-Auto 1111 SDK is a light-weight Python library for generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
+<p>
+    <a href="https://pepy.tech/project/auto1111sdk">
+        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk/month">
+    </a>
+    
+</p>
+Auto 1111 SDK is a lightweight Python library for using Stable Diffusion generating images, upscaling images, and editing images with diffusion models. It is designed to be a modular, light-weight Python client that encapsulates all the main features of the [Automatic 1111 Stable Diffusion Web Ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). Auto 1111 SDK offers 3 main core features currently:
 
 - Text-to-Image, Image-to-Image, Inpainting, and Outpainting pipelines. Our pipelines support the exact same parameters as the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), so you can easily replicate creations from the Web UI on the SDK.
 - Upscaling Pipelines that can run inference for any Esrgan or Real Esrgan upscaler in a few lines of code.
@@ -8,12 +14,22 @@ Auto 1111 SDK is a light-weight Python library for generating images, upscaling 
 
 Join our [Discord!!](https://discord.gg/S7wRQqt6QV)
 
+## Demo
+
+We have a colab demo where you can run many of the operations of Auto 1111 SDK. Check it out [here!!](https://colab.research.google.com/drive/1SekiJ-mdB2V8ogWbyRyF_yDnoMuDGWTl?usp=sharing)
+
 ## Installation
 
 We recommend installing Auto 1111 SDK in a virtual environment from PyPI. Right now, we do not have support for conda environments yet.
 
 ```bash
 pip3 install auto1111sdk
+```
+
+To install the latest version of Auto 1111 SDK, run:
+
+```bash
+pip3 install git+https://github.com/saketh12/Auto1111SDK.git
 ```
 
 ## Quickstart
@@ -31,10 +47,16 @@ output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, step
 output[0].save("image.png")
 ```
 
+## Running on Windows
+
+Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md) Contributed by by Marco Guardigli, mgua@tomware.it
+
 ## Documentation
 
-We have more detailed examples/documentation of how you can use Auto 1111 SDK [here.](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
-For a detailed comparison between us and Huggingface diffusers, you can read [this.](https://flush-ai.gitbook.io/automatic-1111-sdk/auto-1111-sdk-vs-huggingface-diffusers).
+We have more detailed examples/documentation of how you can use Auto 1111 SDK [here](https://flush-ai.gitbook.io/automatic-1111-sdk/). 
+For a detailed comparison between us and Huggingface diffusers, you can read [this](https://flush-ai.gitbook.io/automatic-1111-sdk/auto-1111-sdk-vs-huggingface-diffusers).
+
+For a detailed guide on how to use SDXL, we recommend reading [this](https://flush-ai.gitbook.io/automatic-1111-sdk/pipelines/stable-diffusion-xl)
 
 
 ## Features
@@ -52,16 +74,20 @@ For a detailed comparison between us and Huggingface diffusers, you can read [th
     - also supports weights for prompts: a cat :1.2 AND a dog AND a penguin :2.2
 - Works with a variety of samplers
 - Download models directly from Civit AI and RealEsrgan checkpoints
+- Set custom VAE: works for any model including SDXL
+- Support for SDXL with Stable Diffusion XL Pipelines
+- Pass in custom arguments to the models
+- No 77 prompt token limit (unlike Huggingface Diffusers, which has this limit)
 
-## Limitations
+## Roadmap
 
-- No support for Stable Diffusion XL checkpoints on GPUs.
-- No support Hires Fix and Refiner parameters for inference.
-- No support for Lora's
-- No support for Face restoration
-- No support for Dreambooth training script.
+- Adding support Hires Fix and Refiner parameters for inference.
+- Adding support for Lora's
+- Adding support for Face restoration
+- Adding support for Dreambooth training script.
+- Adding support for custom extensions like Controlnet.
 
-We will be adding support for these features very soon (in the priority of their order). We also accept any contributions to work on these issues!
+We will be adding support for these features very soon. We also accept any contributions to work on these issues!
 
 ## Contributing
 

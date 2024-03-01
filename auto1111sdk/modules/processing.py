@@ -726,6 +726,9 @@ def process_images_inner(p: StableDiffusionProcessing, sd_model, aliases, sdmode
     seed = get_fixed_seed(p.seed)
     subseed = get_fixed_seed(p.subseed)
 
+    p.seed = seed
+    p.subseed = subseed
+
     if p.restore_faces is None:
         p.restore_faces = opts.face_restoration
 
