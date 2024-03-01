@@ -1,9 +1,11 @@
 import os
 
-from . import cmd_args
+from . import cmd_args, script_loading
 from .paths_internal import models_path, script_path, data_path, sd_configs_path, sd_default_config, sd_model_file, default_sd_model_file, extensions_dir, extensions_builtin_dir  # noqa: F401
 
 parser = cmd_args.parser
+script_loading.preload_extensions(extensions_dir, parser)
+# script_loading.preload_extensions(extensions_builtin_dir, parser)
 
 if os.environ.get('IGNORE_CMD_ARGS_ERRORS', None) is None:
     cmd_opts, _ = parser.parse_known_args()

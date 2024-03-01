@@ -7,10 +7,9 @@ from dataclasses import dataclass
 
 import gradio as gr
 
-from . import shared, paths, script_callbacks, script_loading, scripts_postprocessing, errors
+from . import shared, paths, script_callbacks, extensions, script_loading, scripts_postprocessing, errors
 
 AlwaysVisible = object()
-
 
 class PostprocessImageArgs:
     def __init__(self, image):
@@ -443,6 +442,42 @@ def load_scripts():
     scripts_data.clear()
     postprocessing_scripts_data.clear()
     script_callbacks.clear_callbacks()
+
+    scripts_list = list_scripts("scripts", ".py") + list_scripts("modules/processing_scripts", ".py", include_extensions=False)
+
+    syspath = sys.path
+
+    def register_scripts_from_module(module):
+        for script_class in module.__dict__.values():
+            if not inspect.isclass(script_class):
+                continue
+
+            if script_class.__name__ == Script.__name__ or script_class.__name__.endswith('Seed'):
+                scripts_data.append(ScriptClassData(script_class, scriptfile.path, scriptfile.basedir, module))
+            elif issubclass(script_class, scripts_postprocessing.ScriptPostprocessing):
+                postprocessing_scripts_data.append(ScriptClassData(script_class, scriptfile.path, scriptfile.basedir, module))
+
+    # here the scripts_list is already ordered
+    # processing_script is not considered though
+    for scriptfile in scripts_list:
+        try:
+            if scriptfile.basedir != paths.script_path:
+                sys.path = [scriptfile.basedir] + sys.path
+            current_basedir = scriptfile.basedir
+
+            script_module = script_loading.load_module(scriptfile.path)
+
+            register_scripts_from_module(script_module)
+
+        except Exception:
+            errors.report(f"Error loading script: {scriptfile.filename}", exc_info=True)
+
+        finally:
+            sys.path = syspath
+            current_basedir = paths.script_path
+
+    global scripts_txt2img, scripts_img2img, scripts_postproc
+
     scripts_txt2img = ScriptRunner()
     scripts_img2img = ScriptRunner()
     scripts_postproc = scripts_postprocessing.ScriptPostprocessingRunner()
@@ -455,7 +490,6 @@ def wrap_call(func, filename, funcname, *args, default=None, **kwargs):
         errors.report(f"Error calling: {filename}/{funcname}", exc_info=True)
 
     return default
-
 
 class ScriptRunner:
     def __init__(self):
@@ -475,15 +509,13 @@ class ScriptRunner:
         """dict of callbacks to be called after an element is created; key=elem_id, value=list of callbacks"""
 
     def initialize_scripts(self, is_img2img):
-        from . import scripts_auto_postprocessing
+        from modules import scripts_auto_postprocessing
 
         self.scripts.clear()
         self.alwayson_scripts.clear()
         self.selectable_scripts.clear()
 
-        auto_processing_scripts = scripts_auto_postprocessing.create_auto_preprocessing_script_data()
-
-        for script_data in auto_processing_scripts + scripts_data:
+        for script_data in scripts_data:
             script = script_data.script_class()
             script.filename = script_data.path
             script.is_txt2img = not is_img2img
@@ -492,7 +524,7 @@ class ScriptRunner:
 
             visibility = script.show(script.is_img2img)
 
-            if visibility == AlwaysVisible:
+            if "object" in str(type(visibility)):
                 self.scripts.append(script)
                 self.alwayson_scripts.append(script)
                 script.alwayson = True
@@ -502,7 +534,7 @@ class ScriptRunner:
                 self.selectable_scripts.append(script)
 
         self.apply_on_before_component_callbacks()
-
+        
     def apply_on_before_component_callbacks(self):
         for script in self.scripts:
             on_before = script.on_before_component_elem_id or []
@@ -661,6 +693,7 @@ class ScriptRunner:
             return None
 
         script_args = args[script.args_from:script.args_to]
+
         processed = script.run(p, *script_args)
 
         shared.total_tqdm.clear()
@@ -804,7 +837,6 @@ class ScriptRunner:
                 script.setup(p, *script_args)
             except Exception:
                 errors.report(f"Error running setup: {script.filename}", exc_info=True)
-
 
 scripts_txt2img: ScriptRunner = None
 scripts_img2img: ScriptRunner = None

@@ -32,13 +32,14 @@ has_mps = check_for_mps()
 
 def torch_mps_gc() -> None:
     try:
-        if shared.state.current_latent is not None:
-            log.debug("`current_latent` is set, skipping MPS garbage collection")
-            return
+        # if shared.state.current_latent is not None:
+        #     log.debug("`current_latent` is set, skipping MPS garbage collection")
+        #     return
         from torch.mps import empty_cache
         empty_cache()
     except Exception:
-        log.warning("MPS garbage collection failed", exc_info=True)
+        pass
+        # log.warning("MPS garbage collection failed", exc_info=True)
 
 
 # MPS workaround for https://github.com/pytorch/pytorch/issues/89784

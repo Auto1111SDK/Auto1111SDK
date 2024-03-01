@@ -3,6 +3,7 @@ import sys
 import os
 import warnings
 import torch
+
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
 os.environ['ERROR_REPORTING'] = "FALSE"

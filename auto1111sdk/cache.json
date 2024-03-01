@@ -1,0 +1,12 @@
+{
+    "safetensors-metadata": {
+        "checkpoint/model.safetensors": {
+            "mtime": 1706923544.9961846,
+            "value": {}
+        },
+        "checkpoint/dreamshaper.safetensors": {
+            "mtime": 1709081645.797169,
+            "value": {}
+        }
+    }
+}
