@@ -60,7 +60,7 @@ def load_module_at_path(full_path):
     return module
 
 current_file_path = os.path.dirname(__file__)  # Gets the directory of the current script
-target_module_relative_path = os.path.join(current_file_path, '../extensions/controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
+target_module_relative_path = os.path.join(current_file_path, '../extensions/sd-webui-controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
 
 # Normalize the path to resolve any '..'
 target_module_full_path = os.path.normpath(target_module_relative_path)
