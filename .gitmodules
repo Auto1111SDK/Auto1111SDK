@@ -1,0 +1,3 @@
+[submodule "auto1111sdk/extensions/sd-webui-controlnet"]
+	path = auto1111sdk/extensions/sd-webui-controlnet
+	url = https://github.com/superadi04/sd-webui-controlnet.git

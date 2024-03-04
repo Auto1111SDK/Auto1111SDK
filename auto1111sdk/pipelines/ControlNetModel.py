@@ -75,7 +75,7 @@ class ControlNetModel:
         
         if default_command_args is None:
             if torch.cuda.is_available():
-                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --no-half --skip-torch-cuda-test --no-half-vae interrogate"
             elif torch.backends.mps.is_available():
                 os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half --upcast-sampling --no-half-vae --use-cpu interrogate"
             else:
