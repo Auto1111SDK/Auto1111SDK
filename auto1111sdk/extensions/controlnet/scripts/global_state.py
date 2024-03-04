@@ -5,20 +5,18 @@ from collections import OrderedDict
 
 from modules import shared, scripts, sd_models
 from modules.paths import models_path
-from scripts.processor import *
-import scripts.processor as processor
-from scripts.utils import ndarray_lru_cache
-from scripts.logging import logger
-from scripts.enums import StableDiffusionVersion
+from extensions.controlnet.scripts.processor import *
+import extensions.controlnet.scripts.processor as processor
+from extensions.controlnet.scripts.utils import ndarray_lru_cache
+from extensions.controlnet.scripts.logging import logger
+from extensions.controlnet.scripts.enums import StableDiffusionVersion
 
 from typing import Dict, Callable, Optional, Tuple, List
 
 CN_MODEL_EXTS = [".pt", ".pth", ".ckpt", ".safetensors", ".bin"]
 cn_models_dir = os.path.join(models_path, "ControlNet")
 # cn_models_dir_old = os.path.join(scripts.basedir(), "models")
-cn_models_dir_old = os.path.dirname(os.path.realpath(__file__))
-print(cn_models_dir_old)
-print("HAHKDFSJSAKFJSA")
+cn_models_dir_old = os.path.dirname(os.path.dirname(scripts.basedir()))
 
 cn_models = OrderedDict()      # "My_Lora(abcd1234)" -> C:/path/to/model.safetensors
 cn_models_names = {}  # "my_lora" -> "My_Lora(abcd1234)"
@@ -249,7 +247,7 @@ def update_cn_models():
     # extra_lora_paths = (extra_lora_path for extra_lora_path in ext_dirs
     #             if extra_lora_path is not None and os.path.exists(extra_lora_path))
     # paths = [cn_models_dir, cn_models_dir_old, *extra_lora_paths]
-    paths = [cn_models_dir, cn_models_dir_old]
+    paths = [cn_models_dir_old]
 
     for path in paths:
         # sort_by = shared.opts.data.get(
@@ -258,7 +256,6 @@ def update_cn_models():
         # filter_by = shared.opts.data.get("control_net_models_name_filter", "")
         filter_by = ""
         found = get_all_models(sort_by, filter_by, path)
-        print(found)
         cn_models.update({**found, **cn_models})
 
     # insert "None" at the beginning of `cn_models` in-place
@@ -272,6 +269,8 @@ def update_cn_models():
             continue
         name = os.path.splitext(os.path.basename(filename))[0].lower()
         cn_models_names[name] = name_and_hash
+
+
 
 def get_sd_version() -> StableDiffusionVersion:
     if hasattr(shared.sd_model, 'is_sdxl'):

@@ -6,12 +6,12 @@ import math
 from dataclasses import dataclass
 from transformers.models.clip.modeling_clip import CLIPVisionModelOutput
 
-from annotator.util import HWC3
+from extensions.controlnet.annotator.util import HWC3
 from typing import Callable, Tuple, Union
 
 from modules.safe import Extra
 from modules import devices
-from scripts.logging import logger
+from extensions.controlnet.scripts.logging import logger
 
 
 def torch_handler(module: str, name: str):

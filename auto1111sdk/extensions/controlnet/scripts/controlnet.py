@@ -62,7 +62,7 @@ def clear_all_secondary_control_models(m):
 def find_closest_lora_model_name(search: str):
     if not search:
         return None
-        
+
     if search in global_state.cn_models:
         return search
     search = search.lower()
@@ -400,13 +400,13 @@ class Script(scripts.Script, metaclass=(
                 return control_model
 
         # Remove model from cache to clear space before building another model
-        if len(Script.model_cache) > 0 and len(Script.model_cache) >= shared.opts.data.get("control_net_model_cache_size", 2):
+        if len(Script.model_cache) > 0 and len(Script.model_cache) >= 2:
             Script.model_cache.popitem(last=False)
             gc.collect()
             devices.torch_gc()
 
         control_model = Script.build_control_model(p, unet, model)
-
+        
         # if shared.opts.data.get("control_net_model_cache_size", 2) > 0:
         Script.model_cache[model] = control_model
 

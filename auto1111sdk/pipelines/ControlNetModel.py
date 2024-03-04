@@ -61,14 +61,14 @@ def read_image(img_path):
     return encoded_image
 
 class ControlNetModel:
-    def __init__(self, model: str, image: str, module: str = 'none', weight: float = 1.0, 
+    def __init__(self, model_path: str, image: str, module: str = 'none', weight: float = 1.0, 
                  resize_mode: int = 1, lowvram: bool = False, processor_res: int = 512, 
                  threshold_a: int = 1, threshold_b: int = 1, guidance_start: float = 0.0, 
                  guidance_end: float = 1.0, control_mode: int = 0, pixel_perfect: bool = False, 
                  default_command_args = None):
 
-        if not model:
-            raise ValueError("Parameter 'model' is required and cannot be None or empty.")
+        if not model_path:
+            raise ValueError("Parameter 'model_path' is required and cannot be None or empty.")
         if not image:
             raise ValueError("Parameter 'image' is required and cannot be None or empty.")
         
@@ -100,12 +100,13 @@ class ControlNetModel:
 
         from ..modules.processing import StableDiffusionProcessingTxt2Img, process_images, StableDiffusionProcessingImg2Img 
         from ..modules import processing, images, devices, script_callbacks, scripts, extensions
+        from ..extensions.controlnet.scripts import global_state
 
         extensions.list_extensions()
         scripts.load_scripts()
 
         current_file_path = os.path.dirname(__file__)  # Gets the directory of the current script
-        target_module_relative_path = os.path.join(current_file_path, '../extensions/sd-webui-controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
+        target_module_relative_path = os.path.join(current_file_path, '../extensions/controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
 
         # Normalize the path to resolve any '..'
         target_module_full_path = os.path.normpath(target_module_relative_path)
@@ -116,7 +117,7 @@ class ControlNetModel:
         self.config = {
             'enabled': True, 
             'module': module,  # Assuming this remains constant as well
-            'model': model,
+            'model': model_path,
             'weight': weight,
             'image': read_image(image),
             'resize_mode': resize_mode,
@@ -134,6 +135,10 @@ class ControlNetModel:
 
         if not script_runner.scripts:
             script_runner.initialize_scripts(False)
+
+        global_state.cn_models_dir_old = os.path.dirname(os.path.abspath(model_path))
+
+        # update_cn_models(os.path.dirname(os.path.abspath(model_path)))
 
         UiControlNetUnit = control_net_ui_group.UiControlNetUnit
 

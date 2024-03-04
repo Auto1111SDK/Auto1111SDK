@@ -13,7 +13,7 @@ from PIL import Image
 # output = pipe.generate_txt2img(num_images = 2, prompt = prompt, height = 1024, width = 1024, negative_prompt = negative_prompt, steps = 10)
 # output[0].save("huh.png")
 
-model = ControlNetModel(model="control_v11p_sd15_openpose", module="openpose_full", image="controlNet_demo_image.jpg")
+model = ControlNetModel(model_path="control_v11p_sd15_openpose", module="openpose_full", image="controlNet_demo_image.jpg")
 
 pipe = StableDiffusionPipeline("v1-5-pruned-emaonly.ckpt", controlnet=model)
 prompt = "full-body, a young female, highlights in hair, dancing outside a restaurant, brown eyes, wearing jeans"
