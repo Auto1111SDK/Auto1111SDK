@@ -47,6 +47,25 @@ output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, step
 output[0].save("image.png")
 ```
 
+## Controlnet
+
+Right now, Controlnet only works with fp32. We are adding support for fp16 very soon.
+
+```python
+from auto1111sdk import StableDiffusionPipeline
+from auto1111sdk import ControlNetModel
+
+model = ControlNet(model="<THE CONTROLNET MODEL FILE NAME (WITHOUT EXTENSION)>", 
+                   image="<PATH TO IMAGE>")
+
+pipe = StableDiffusionPipeline("<Path to your local safetensors or checkpoint file>", controlnet=model)
+
+prompt = "a picture of a brown dog"
+output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, steps = 10)
+
+output[0].save("image.png")
+```
+
 ## Running on Windows
 
 Find the instructions [here.](https://github.com/saketh12/Auto1111SDK/blob/main/automatic1111sdk_on_windows_w_gpu.md) Contributed by by Marco Guardigli, mgua@tomware.it
