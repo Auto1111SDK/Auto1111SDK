@@ -13,7 +13,6 @@ os.environ['SD_WEBUI_RESTART'] = "tmp/restart"
 
 warnings.filterwarnings(action="ignore", category=DeprecationWarning, module="pytorch_lightning")
 warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision")
-
 warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision.transforms.functional_tensor")
 
 import io
