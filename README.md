@@ -55,7 +55,7 @@ Right now, Controlnet only works with fp32. We are adding support for fp16 very 
 from auto1111sdk import StableDiffusionPipeline
 from auto1111sdk import ControlNetModel
 
-model = ControlNet(model="<THE CONTROLNET MODEL FILE NAME (WITHOUT EXTENSION)>", 
+model = ControlNetModel(model="<THE CONTROLNET MODEL FILE NAME (WITHOUT EXTENSION)>", 
                    image="<PATH TO IMAGE>")
 
 pipe = StableDiffusionPipeline("<Path to your local safetensors or checkpoint file>", controlnet=model)
