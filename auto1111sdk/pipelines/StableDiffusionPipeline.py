@@ -170,15 +170,16 @@ default_args_img2img_inpainting = {
 
 class StableDiffusionPipeline:
     def __init__(self, model_path, default_command_args = None, clip_skip = 1, controlnet = None):
-        if default_command_args is None:
-            if torch.cuda.is_available():
-                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
-            elif torch.backends.mps.is_available():
-                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
+        if controlnet == None:
+            if default_command_args is None:
+                if torch.cuda.is_available():
+                    os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+                elif torch.backends.mps.is_available():
+                    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half --upcast-sampling --no-half-vae --use-cpu interrogate"
+                else:
+                    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
             else:
-                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
-        else:
-            os.environ['COMMANDLINE_ARGS'] = default_command_args
+                os.environ['COMMANDLINE_ARGS'] = default_command_args
 
         from ..modules import sd_samplers
         sd_samplers.set_samplers()

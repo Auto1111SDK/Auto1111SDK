@@ -5,14 +5,6 @@ import warnings
 import torch
 # from .EsrganPipelines import EsrganPipeline, RealEsrganPipeline
 
-if torch.cuda.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
-elif torch.backends.mps.is_available():
-    os.environ['COMMANDLINE_ARGS'] = "--no-half --skip-torch-cuda-test --upcast-sampling --no-half-vae interrogate"
-    # os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --upcast-sampling --no-half-vae --use-cpu interrogate"
-else:
-    os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
-
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "1"
 os.environ['TORCH_COMMAND'] = "pip install torch==2.0.1 torchvision==0.15.2"
 os.environ['ERROR_REPORTING'] = "FALSE"
@@ -60,7 +52,7 @@ def load_module_at_path(full_path):
     return module
 
 current_file_path = os.path.dirname(__file__)  # Gets the directory of the current script
-target_module_relative_path = os.path.join(current_file_path, '../extensions/sd-webui-controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
+target_module_relative_path = os.path.join(current_file_path, '../extensions/controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
 
 # Normalize the path to resolve any '..'
 target_module_full_path = os.path.normpath(target_module_relative_path)
@@ -89,23 +81,43 @@ UiControlNetUnit_false = {
     'advanced_weighting': None
 }
 
+def read_image(img_path):
+    import cv2
+    import base64
+
+    img = cv2.imread(img_path)
+    retval, bytes = cv2.imencode('.png', img)
+    encoded_image = base64.b64encode(bytes).decode('utf-8')
+    return encoded_image
+
 class ControlNetModel:
     def __init__(self, model: str, image: str, module: str = 'none', weight: float = 1.0, 
                  resize_mode: int = 1, lowvram: bool = False, processor_res: int = 512, 
                  threshold_a: int = 1, threshold_b: int = 1, guidance_start: float = 0.0, 
-                 guidance_end: float = 1.0, control_mode: int = 0, pixel_perfect: bool = False):
+                 guidance_end: float = 1.0, control_mode: int = 0, pixel_perfect: bool = False, 
+                 default_command_args = None):
 
         if not model:
             raise ValueError("Parameter 'model' is required and cannot be None or empty.")
         if not image:
             raise ValueError("Parameter 'image' is required and cannot be None or empty.")
         
+        if default_command_args is None:
+            if torch.cuda.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--upcast-sampling --skip-torch-cuda-test --no-half-vae interrogate"
+            elif torch.backends.mps.is_available():
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half --upcast-sampling --no-half-vae --use-cpu interrogate"
+            else:
+                os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
+        else:
+            os.environ['COMMANDLINE_ARGS'] = default_command_args
+        
         self.config = {
             'enabled': True, 
             'module': module,  # Assuming this remains constant as well
             'model': model,
             'weight': weight,
-            'image': image,
+            'image': read_image(image),
             'resize_mode': resize_mode,
             'lowvram': lowvram,
             'processor_res': processor_res,
