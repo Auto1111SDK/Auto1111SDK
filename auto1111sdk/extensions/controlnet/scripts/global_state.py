@@ -256,6 +256,7 @@ def update_cn_models():
         # filter_by = shared.opts.data.get("control_net_models_name_filter", "")
         filter_by = ""
         found = get_all_models(sort_by, filter_by, path)
+        print(found)
         cn_models.update({**found, **cn_models})
 
     # insert "None" at the beginning of `cn_models` in-place
