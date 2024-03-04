@@ -16,7 +16,7 @@ from typing import Dict, Callable, Optional, Tuple, List
 CN_MODEL_EXTS = [".pt", ".pth", ".ckpt", ".safetensors", ".bin"]
 cn_models_dir = os.path.join(models_path, "ControlNet")
 # cn_models_dir_old = os.path.join(scripts.basedir(), "models")
-cn_models_dir_old = os.path.dirname(os.path.dirname(scripts.basedir()))
+cn_models_dir_old = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))))
 print(cn_models_dir_old)
 print("HAHKDFSJSAKFJSA")
 
