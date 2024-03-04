@@ -418,11 +418,10 @@ class Script(scripts.Script, metaclass=(
             raise RuntimeError(f"You have not selected any ControlNet Model.")
 
         model_path = global_state.cn_models.get(model, None)
+
         if model_path is None:
             model = find_closest_lora_model_name(model)
             model_path = global_state.cn_models.get(model, None)
-
-        print("MFMFMFMFFMFMMFMFMFFMFMMFMF")
 
         if model_path is None:
             raise RuntimeError(f"model not found: {model}")
@@ -435,6 +434,7 @@ class Script(scripts.Script, metaclass=(
             raise ValueError(f"file not found: {model_path}")
 
         logger.info(f"Loading model: {model}")
+        
         state_dict = load_state_dict(model_path)
         control_model = build_model_by_guess(state_dict, unet, model_path)
         control_model.model.to('cpu', dtype=p.sd_model.dtype)
