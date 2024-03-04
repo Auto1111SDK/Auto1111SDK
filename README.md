@@ -26,7 +26,7 @@ We recommend installing Auto 1111 SDK in a virtual environment from PyPI. Right 
 pip3 install auto1111sdk
 ```
 
-To install the latest version of Auto 1111 SDK, run:
+To install the latest version of Auto 1111 SDK (with controlnet now included), run:
 
 ```bash
 pip3 install git+https://github.com/saketh12/Auto1111SDK.git
