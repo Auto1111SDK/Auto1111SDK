@@ -15,34 +15,14 @@ warnings.filterwarnings(action="ignore", category=DeprecationWarning, module="py
 warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision")
 
 warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision.transforms.functional_tensor")
-from ..modules import sd_samplers
-sd_samplers.set_samplers()
 
-from ..modules import shared_init
-shared_init.initialize()
-
-from ..modules import sd_models
-sd_models.setup_model()
-
-from ..modules import script_callbacks, sd_hijack_optimizations, sd_hijack
-script_callbacks.on_list_optimizers(sd_hijack_optimizations.list_optimizers)
-sd_hijack.list_optimizers()
-
-from ..modules import shared
-warnings.filterwarnings("default" if shared.opts.show_warnings else "ignore", category=UserWarning)
-
-from ..modules.processing import StableDiffusionProcessingTxt2Img, process_images, StableDiffusionProcessingImg2Img 
 import io
 from PIL import Image, PngImagePlugin, ImageDraw
 import base64
 import piexif
-from ..modules import processing, images, devices, script_callbacks, scripts, extensions
 import math
 import random
 import importlib
-
-extensions.list_extensions()
-scripts.load_scripts()
 
 def load_module_at_path(full_path):
     module_name = os.path.basename(full_path).replace('.py', '')
@@ -50,15 +30,6 @@ def load_module_at_path(full_path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
-current_file_path = os.path.dirname(__file__)  # Gets the directory of the current script
-target_module_relative_path = os.path.join(current_file_path, '../extensions/controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
-
-# Normalize the path to resolve any '..'
-target_module_full_path = os.path.normpath(target_module_relative_path)
-
-# Load the module
-control_net_ui_group = load_module_at_path(target_module_full_path)
 
 UiControlNetUnit_false = {
     'enabled': False,
@@ -111,6 +82,37 @@ class ControlNetModel:
                 os.environ['COMMANDLINE_ARGS'] = "--skip-torch-cuda-test --no-half-vae --no-half interrogate"
         else:
             os.environ['COMMANDLINE_ARGS'] = default_command_args
+
+        from ..modules import sd_samplers
+        sd_samplers.set_samplers()
+
+        from ..modules import shared_init
+        shared_init.initialize()
+
+        from ..modules import sd_models
+        sd_models.setup_model()
+
+        from ..modules import script_callbacks, sd_hijack_optimizations, sd_hijack
+        script_callbacks.on_list_optimizers(sd_hijack_optimizations.list_optimizers)
+        sd_hijack.list_optimizers()
+
+        from ..modules import shared
+        warnings.filterwarnings("default" if shared.opts.show_warnings else "ignore", category=UserWarning)
+
+        from ..modules.processing import StableDiffusionProcessingTxt2Img, process_images, StableDiffusionProcessingImg2Img 
+        from ..modules import processing, images, devices, script_callbacks, scripts, extensions
+
+        extensions.list_extensions()
+        scripts.load_scripts()
+
+        current_file_path = os.path.dirname(__file__)  # Gets the directory of the current script
+        target_module_relative_path = os.path.join(current_file_path, '../extensions/sd-webui-controlnet/scripts/controlnet_ui/controlnet_ui_group.py')
+
+        # Normalize the path to resolve any '..'
+        target_module_full_path = os.path.normpath(target_module_relative_path)
+
+        # Load the module
+        control_net_ui_group = load_module_at_path(target_module_full_path)
         
         self.config = {
             'enabled': True, 
