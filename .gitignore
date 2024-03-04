@@ -6,3 +6,6 @@ setup.py
 dreamshaper.safetensors
 control_v11p_sd15_openpose.pth
 v1-5-pruned-emaonly.ckpt
+controlNet_demo_image.jpg
+runner.py
+huh.png
