@@ -16,10 +16,7 @@ from typing import Dict, Callable, Optional, Tuple, List
 CN_MODEL_EXTS = [".pt", ".pth", ".ckpt", ".safetensors", ".bin"]
 cn_models_dir = os.path.join(models_path, "ControlNet")
 # cn_models_dir_old = os.path.join(scripts.basedir(), "models")
-cn_models_dir_old = os.path.dirname(os.path.dirname(scripts.basedir()))
-print(cn_models_dir_old)
-print("HEYYYYYY")
-
+cn_models_dir_old = os.environ.get('CONTROLNET_MODELS_PATH', "./")
 cn_models = OrderedDict()      # "My_Lora(abcd1234)" -> C:/path/to/model.safetensors
 cn_models_names = {}  # "my_lora" -> "My_Lora(abcd1234)"
 

@@ -136,7 +136,10 @@ class ControlNetModel:
         if not script_runner.scripts:
             script_runner.initialize_scripts(False)
 
-        global_state.cn_models_dir_old = os.path.dirname(os.path.abspath(model_path))
+        os.environ['CONTROLNET_MODELS_PATH'] = os.path.dirname(os.path.abspath(model_path))
+
+        print("HEYYYYYY HERE")
+        print(global_state.cn_models_dir_old)
 
         # update_cn_models(os.path.dirname(os.path.abspath(model_path)))
 
