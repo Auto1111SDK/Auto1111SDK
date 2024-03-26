@@ -2,7 +2,7 @@
 
 <p>
     <a href="https://pepy.tech/project/auto1111sdk">
-        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk/month">
+        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk">
     </a>
     
 </p>
