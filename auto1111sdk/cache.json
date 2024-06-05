@@ -7,6 +7,25 @@
         "checkpoint/dreamshaper.safetensors": {
             "mtime": 1709081645.797169,
             "value": {}
+        },
+        "checkpoint/anime_v82024-05-25_18-22-26-save-24700-1300-0.safetensors": {
+            "mtime": 1717120206.5628574,
+            "value": {
+                "ot_branch": "master",
+                "modelspec.architecture": "stable-diffusion-xl-v1-base",
+                "modelspec.hash_sha256": "0x2b942823c79ab9c30ae5a3a5c9aba1ede60a5ce9ce7245fc4276a0013e82d730",
+                "modelspec.sai_model_spec": "1.0.0",
+                "modelspec.title": "Stable Diffusion XL 1.0 Base",
+                "ss_base_model_version": "sdxl_",
+                "ot_revision": "f3210d9",
+                "modelspec.author": "StabilityAI",
+                "modelspec.date": "2024-05-25",
+                "modelspec.license": "CreativeML Open RAIL++-M License",
+                "modelspec.resolution": "1024x1024",
+                "modelspec.prediction_type": "epsilon",
+                "modelspec.implementation": "https://github.com/Stability-AI/generative-models",
+                "modelspec.description": "SDXL 1.0 Base Model, compositional expert. SDXL, the most advanced development in the Stable Diffusion text-to-image suite of models. SDXL produces massively improved image and composition detail over its predecessors. The ability to generate hyper-realistic creations for films, television, music, and instructional videos, as well as offering advancements for design and industrial use, places SDXL at the forefront of real world applications for AI imagery."
+            }
         }
     }
 }

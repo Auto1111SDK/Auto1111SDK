@@ -650,5 +650,5 @@ if __name__ == '__main__':
     res = res>0.5
     res = res.float()
     res = (res[0,0].cpu().data.numpy()*255.).astype(np.uint8)
-    print(res.shape)
+    # print(res.shape)
     cv2.imwrite('edge.png', res)
