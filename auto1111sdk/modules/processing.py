@@ -932,18 +932,18 @@ def process_images_inner(p: StableDiffusionProcessing, sd_model, aliases, sdmode
 
         index_of_first_image = 0
         unwanted_grid_because_of_img_count = len(output_images) < 2 and opts.grid_only_if_multiple
-        if (opts.return_grid or opts.grid_save) and not p.do_not_save_grid and not unwanted_grid_because_of_img_count:
-            grid = images.image_grid(output_images, p.batch_size)
+        # if (opts.return_grid or opts.grid_save) and not p.do_not_save_grid and not unwanted_grid_because_of_img_count:
+        #     grid = images.image_grid(output_images, p.batch_size)
 
-            if opts.return_grid:
-                text = infotext(use_main_prompt=True)
-                infotexts.insert(0, text)
-                if opts.enable_pnginfo:
-                    grid.info["parameters"] = text
-                output_images.insert(0, grid)
-                index_of_first_image = 1
-            if opts.grid_save:
-                images.save_image(grid, p.outpath_grids, "grid", p.all_seeds[0], p.all_prompts[0], opts.grid_format, info=infotext(use_main_prompt=True), short_filename=not opts.grid_extended_filename, p=p, grid=True)
+        #     if opts.return_grid:
+        #         text = infotext(use_main_prompt=True)
+        #         infotexts.insert(0, text)
+        #         if opts.enable_pnginfo:
+        #             grid.info["parameters"] = text
+        #         output_images.insert(0, grid)
+        #         index_of_first_image = 1
+        #     if opts.grid_save:
+        #         images.save_image(grid, p.outpath_grids, "grid", p.all_seeds[0], p.all_prompts[0], opts.grid_format, info=infotext(use_main_prompt=True), short_filename=not opts.grid_extended_filename, p=p, grid=True)
 
     if not p.disable_extra_networks and p.extra_network_data:
         extra_networks.deactivate(p, p.extra_network_data)

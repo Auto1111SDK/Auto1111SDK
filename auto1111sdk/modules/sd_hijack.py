@@ -90,9 +90,9 @@ def apply_optimizations(option=None):
         matching_optimizer = optimizers[0]
 
     if matching_optimizer is not None:
-        print(f"Applying attention optimization: {matching_optimizer.name}... ", end='')
+        # print(f"Applying attention optimization: {matching_optimizer.name}... ", end='')
         matching_optimizer.apply()
-        print("done.")
+        # print("done.")
         current_optimizer = matching_optimizer
         return current_optimizer.name
     else:
